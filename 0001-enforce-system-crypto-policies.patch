@@ -1,6 +1,6 @@
-From dfd09ced8657f7b3eac79038418fc5a452c396d6 Mon Sep 17 00:00:00 2001
+From 7bf606ebe95c0eb0d9d7d55614b22ea6288d0598 Mon Sep 17 00:00:00 2001
 From: Sergey Avseyev <sergey.avseyev@gmail.com>
-Date: Wed, 28 Nov 2018 18:53:22 +0300
+Date: Sat, 21 Dec 2019 18:52:54 +0800
 Subject: [PATCH] enforce system crypto policies
 
 ---
@@ -9,7 +9,7 @@ Subject: [PATCH] enforce system crypto policies
  2 files changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/test/core/handshake/client_ssl.cc b/test/core/handshake/client_ssl.cc
-index 467df6e229..b31934e51b 100644
+index 467df6e..b31934e 100644
 --- a/test/core/handshake/client_ssl.cc
 +++ b/test/core/handshake/client_ssl.cc
 @@ -161,8 +161,7 @@ static void server_thread(void* arg) {
@@ -23,7 +23,7 @@ index 467df6e229..b31934e51b 100644
      ERR_print_errors_fp(stderr);
      gpr_log(GPR_ERROR, "Couldn't set server cipher list.");
 diff --git a/test/core/handshake/server_ssl_common.cc b/test/core/handshake/server_ssl_common.cc
-index 41b2829d8b..8b21ea7c73 100644
+index 41b2829..8b21ea7 100644
 --- a/test/core/handshake/server_ssl_common.cc
 +++ b/test/core/handshake/server_ssl_common.cc
 @@ -167,8 +167,7 @@ bool server_ssl_test(const char* alpn_list[], unsigned int alpn_list_len,
