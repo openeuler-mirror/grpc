@@ -1,0 +1,15 @@
+diff --git a/Makefile b/Makefile
+index 6ede6e34d2..d6190ecde4 100644
+--- a/Makefile
++++ b/Makefile
+@@ -478,6 +478,10 @@ LDFLAGS += $(EXTRA_LDFLAGS)
+ DEFINES += $(EXTRA_DEFINES)
+ LDLIBS += $(EXTRA_LDLIBS)
+ 
++CFLAGS += -Wl,-z,now -fPIE -fPIC
++CPPFLAGS += -Wl,-z,now -fstack-protector-strong
++LDFLAGS += -Wl,-z,now -pie
++
+ HOST_CPPFLAGS += $(CPPFLAGS)
+ HOST_CFLAGS += $(CFLAGS)
+ HOST_CXXFLAGS += $(CXXFLAGS)
