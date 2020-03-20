@@ -1,6 +1,6 @@
 Name:          grpc
 Version:       1.22.0
-Release:       2
+Release:       3
 Summary:       A modern, open source high performance RPC framework that can run in any environment
 License:       ASL 2.0
 URL:           https://www.grpc.io
@@ -11,7 +11,7 @@ Patch9001:     0002-add-secure-compile-option-in-Makefile.patch
 
 Patch0002:     0002-patch-from-15532.patch
 
-BuildRequires: gcc-c++ pkgconfig protobuf-devel protobuf-compiler
+BuildRequires: gcc-c++ pkgconfig protobuf-devel protobuf-compiler gdb
 BuildRequires: openssl-devel c-ares-devel gflags-devel gtest-devel zlib-devel gperftools-devel
 BuildRequires: python3-devel python3-setuptools python3-Cython
 Requires:      protobuf-compiler
@@ -93,6 +93,9 @@ make install-grpc-cli prefix="%{buildroot}%{_prefix}"
 %{python3_sitearch}/grpcio-%{version}-py?.?.egg-info
 
 %changelog
+* Fri Mar 20 2020 songnannan <songnannan2@huawei.com> - 1.22.0-3
+- add gdb in buildrequires 
+
 * Sat Jan 11 2020 openEuler Buildteam <buildteam@openeuler.org> - 1.22.0-2
 - Delete unused patch
 
