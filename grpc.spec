@@ -1,15 +1,14 @@
 Name:          grpc
-Version:       1.22.0
-Release:       3
+Version:       1.28.1
+Release:       1
 Summary:       A modern, open source high performance RPC framework that can run in any environment
 License:       ASL 2.0
 URL:           https://www.grpc.io
 Source0:       https://github.com/grpc/grpc/archive/v%{version}/%{name}-%{version}.tar.gz
+Source1:       abseil-cpp-b832dce8489ef7b6231384909fd9b68d5a5ff2b7.tar.gz 
 
 Patch9000:     0001-cxx-Arg-List-Too-Long.patch
 Patch9001:     0002-add-secure-compile-option-in-Makefile.patch
-
-Patch0002:     0002-patch-from-15532.patch
 
 BuildRequires: gcc-c++ pkgconfig protobuf-devel protobuf-compiler gdb
 BuildRequires: openssl-devel c-ares-devel gflags-devel gtest-devel zlib-devel gperftools-devel
@@ -47,6 +46,7 @@ Python3 bindings for gRPC.
 sed -i 's:^prefix ?= .*:prefix ?= %{_prefix}:' Makefile
 sed -i 's:$(prefix)/lib:$(prefix)/%{_lib}:' Makefile
 sed -i 's:^GTEST_LIB =.*::' Makefile
+tar -zxf %{SOURCE1} --strip-components 1 -C %{_builddir}/%{name}-%{version}/third_party/abseil-cpp/
 
 %build
 %make_build shared plugins
@@ -76,7 +76,7 @@ make install-grpc-cli prefix="%{buildroot}%{_prefix}"
 %{_bindir}/grpc_*_plugin
 
 %{_libdir}/*.so.1*
-%{_libdir}/*.so.7*
+%{_libdir}/*.so.9*
 %{_datadir}/grpc
 
 %files devel
@@ -93,8 +93,11 @@ make install-grpc-cli prefix="%{buildroot}%{_prefix}"
 %{python3_sitearch}/grpcio-%{version}-py?.?.egg-info
 
 %changelog
+* Tue Jun 9 2020 zhujunhao <zhujunhao8@huawei.com> - 1.28.1-1
+- upadate to 1.28.1
+
 * Fri Mar 20 2020 songnannan <songnannan2@huawei.com> - 1.22.0-3
-- add gdb in buildrequires 
+- add gdb in buildrequires
 
 * Sat Jan 11 2020 openEuler Buildteam <buildteam@openeuler.org> - 1.22.0-2
 - Delete unused patch
