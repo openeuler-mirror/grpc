@@ -1,18 +1,20 @@
 Name:          grpc
-Version:       1.28.1
+Version:       1.30.2
 Release:       1
 Summary:       A modern, open source high performance RPC framework that can run in any environment
 License:       ASL 2.0
 URL:           https://www.grpc.io
 Source0:       https://github.com/grpc/grpc/archive/v%{version}/%{name}-%{version}.tar.gz
 Source1:       abseil-cpp-b832dce8489ef7b6231384909fd9b68d5a5ff2b7.tar.gz 
+Source2:       v1.5.1.tar.gz
 
-Patch9000:     0001-cxx-Arg-List-Too-Long.patch
-Patch9001:     0002-add-secure-compile-option-in-Makefile.patch
+Patch0001:     0001-cxx-Arg-List-Too-Long.patch
+Patch0002:     0002-add-secure-compile-option-in-Makefile.patch
 
 BuildRequires: gcc-c++ pkgconfig protobuf-devel protobuf-compiler gdb
 BuildRequires: openssl-devel c-ares-devel gflags-devel gtest-devel zlib-devel gperftools-devel
 BuildRequires: python3-devel python3-setuptools python3-Cython
+BuildRequires: grpc
 Requires:      protobuf-compiler
 
 Provides:      %{name}-plugins = %{version}-%{release}
@@ -42,11 +44,12 @@ Requires:      %{name} = %{version}-%{release}
 Python3 bindings for gRPC.
 
 %prep
-%autosetup -p1
+%autosetup -p1 -n %{name}-%{version} 
 sed -i 's:^prefix ?= .*:prefix ?= %{_prefix}:' Makefile
 sed -i 's:$(prefix)/lib:$(prefix)/%{_lib}:' Makefile
 sed -i 's:^GTEST_LIB =.*::' Makefile
 tar -zxf %{SOURCE1} --strip-components 1 -C %{_builddir}/%{name}-%{version}/third_party/abseil-cpp/
+tar -zxf %{SOURCE2} --strip-components 1 -C %{_builddir}/%{name}-%{version}/third_party/benchmark/
 
 %build
 %make_build shared plugins
@@ -62,6 +65,9 @@ export CFLAGS="%optflags"
 %install
 make install prefix="%{buildroot}%{_prefix}"
 make install-grpc-cli prefix="%{buildroot}%{_prefix}"
+
+cp -a %{_libdir}/lib{address_sorting,gpr,grpc,grpc_cronet,grpc_unsecure,upb}.so.9* %{buildroot}%{_libdir}
+
 %delete_la_and_a
 %py3_install
 
@@ -93,6 +99,12 @@ make install-grpc-cli prefix="%{buildroot}%{_prefix}"
 %{python3_sitearch}/grpcio-%{version}-py?.?.egg-info
 
 %changelog
+* Fri Jul 31 2020 gaihuiying <gaihuiying1@huawei.com> - 1.30.2-1
+- Type:requirement
+- ID:NA
+- SUG:NA
+- DESC:update grpc version to 1.30.2
+
 * Tue Jun 9 2020 zhujunhao <zhujunhao8@huawei.com> - 1.28.1-1
 - upadate to 1.28.1
 
