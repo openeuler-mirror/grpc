@@ -27,29 +27,29 @@ index e8635eda2d..6ede6e34d2 100644
      include/grpcpp/alarm_impl.h \
      include/grpcpp/channel.h \
 @@ -6267,6 +6277,8 @@ PUBLIC_HEADERS_CXX += \
-     include/grpcpp/support/sync_stream_impl.h \
-     include/grpcpp/support/time.h \
-     include/grpcpp/support/validate_service_config.h \
+     include/grpcpp/grpcpp.h \
+     include/grpcpp/health_check_service_interface.h \
+     include/grpcpp/health_check_service_interface_impl.h \
 +
 +PUBLIC_HEADERS_CXX2 += \
-     include/grpc/support/alloc.h \
-     include/grpc/support/atm.h \
-     include/grpc/support/atm_gcc_atomic.h \
+     include/grpcpp/impl/call.h \
+     include/grpcpp/impl/channel_argument_option.h \
+     include/grpcpp/impl/client_unary_call.h \
 @@ -6320,6 +6332,8 @@ PUBLIC_HEADERS_CXX += \
-     include/grpc/impl/codegen/propagation_bits.h \
-     include/grpc/impl/codegen/slice.h \
-     include/grpc/impl/codegen/status.h \
+     include/grpcpp/impl/server_initializer.h \
+     include/grpcpp/impl/server_initializer_impl.h \
+     include/grpcpp/impl/service_type.h \
 +
 +PUBLIC_HEADERS_CXX3 += \
-     include/grpc++/impl/codegen/async_stream.h \
-     include/grpc++/impl/codegen/async_unary_call.h \
-     include/grpc++/impl/codegen/byte_buffer.h \
+     include/grpcpp/resource_quota.h \
+     include/grpcpp/resource_quota_impl.h \
+     include/grpcpp/security/auth_context.h \
 @@ -6350,6 +6364,8 @@ PUBLIC_HEADERS_CXX += \
-     include/grpc++/impl/codegen/stub_options.h \
-     include/grpc++/impl/codegen/sync_stream.h \
-     include/grpc++/impl/codegen/time.h \
+     include/grpcpp/server_impl.h \
+     include/grpcpp/server_posix.h \
+     include/grpcpp/server_posix_impl.h \
 +
 +PUBLIC_HEADERS_CXX4 += \
-     include/grpcpp/impl/codegen/async_generic_service.h \
-     include/grpcpp/impl/codegen/async_stream.h \
-     include/grpcpp/impl/codegen/async_stream_impl.h \
+     include/grpcpp/support/async_stream.h \
+     include/grpcpp/support/async_stream_impl.h \
+     include/grpcpp/support/async_unary_call.h \
