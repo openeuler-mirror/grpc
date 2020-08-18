@@ -1,6 +1,6 @@
 Name:          grpc
 Version:       1.28.1
-Release:       2
+Release:       3
 Summary:       A modern, open source high performance RPC framework that can run in any environment
 License:       ASL 2.0
 URL:           https://www.grpc.io
@@ -93,6 +93,9 @@ make install-grpc-cli prefix="%{buildroot}%{_prefix}"
 %{python3_sitearch}/grpcio-%{version}-py?.?.egg-info
 
 %changelog
+* Tue Aug 18 2020 chenyaqiang <chenyaqiang@huawei.com> - 1.28.1-3
+- rebuild for package build and clarify last changelog info
+
 * Mon May 11 2020 openEuler Buildteam <buildteam@openeuler.org> - 1.28.1-2
 - Type:rebuild
 - ID:NA
