@@ -1,0 +1,16 @@
+From:bitcoffee<854182924@qq.com>
+Reason:add-secure-compile-option-in-Makefile
+base on author:zhuchunyi   commit:b00721fa 
+diff -urN grpc/CMakeLists.txt grpc_new/CMakeLists.txt
+--- grpc/CMakeLists.txt	2020-08-24 09:14:14.361862041 +0800
++++ grpc_new/CMakeLists.txt	2020-08-27 15:36:51.498277936 +0800
+@@ -225,6 +226,9 @@
+ endif()
+ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${_gRPC_C_CXX_FLAGS}")
+ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${_gRPC_C_CXX_FLAGS}")
++set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wl,-z,now -fPIE -fPIC")
++set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,-z,now -fstack-protector-strong")
++set(_gRPC_ALLTARGETS_LIBRARYIES "${_gRPC_ALLTARGETS_LIBRARYIES} -Wl,-z,now -pie") 
+ 
+ if(gRPC_USE_PROTO_LITE)
+   set(_gRPC_PROTOBUF_LIBRARY_NAME "libprotobuf-lite")
