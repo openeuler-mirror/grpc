@@ -23,7 +23,7 @@ BuildRequires: gcc-c++ pkgconfig protobuf-devel protobuf-compiler gdb
 BuildRequires: openssl-devel c-ares-devel gflags-devel gtest-devel zlib-devel gperftools-devel re2-devel
 BuildRequires: python3-devel python3-setuptools python3-Cython
 BuildRequires: cmake >= 3.13.0
-Requires:      protobuf-compiler glfags 
+Requires:      protobuf-compiler gflags 
 
 Provides:      %{name}-plugins = %{version}-%{release}
 Provides:      %{name}-cli = %{version}-%{release}
