@@ -5,7 +5,7 @@ Summary:       A modern, open source high performance RPC framework that can run
 License:       ASL 2.0
 URL:           https://www.grpc.io
 Source0:       https://github.com/grpc/grpc/archive/v%{version}/%{name}-%{version}.tar.gz
-Source1:       abseil-cpp-b832dce8489ef7b6231384909fd9b68d5a5ff2b7.tar.gz 
+Source1:       abseil-20200225.tar.gz 
 Source2:       benchmark-v1.5.1.tar.gz  
 Source3:       re2-2020-08-01.tar.gz
 Source4:       googletest-release-1.10.0.tar.gz
