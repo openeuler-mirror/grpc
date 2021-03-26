@@ -1,6 +1,6 @@
 Name:          grpc
 Version:       1.31.0
-Release:       2
+Release:       3
 Summary:       A modern, open source high performance RPC framework that can run in any environment
 License:       ASL 2.0
 URL:           https://www.grpc.io
@@ -134,6 +134,12 @@ cd ../..
 %{python3_sitearch}/grpcio-%{version}-py?.?.egg-info
 
 %changelog
+* Fri Mar 26 2021 liulong <liulong20@huawei.com> - 1.31.0-3
+- Type:requirement
+- ID:NA
+- SUG:NA
+- DESC:rebuild version to 1.31.0-3
+
 * Wed Dec 09 2020 gaihuiying <gaihuiying1@huawei.com> - 1.31.0-2
 - Type:requirement
 - ID:NA
