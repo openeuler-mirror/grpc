@@ -1,13 +1,11 @@
 Name:          grpc
 Version:       1.31.0
-Release:       2
+Release:       4
 Summary:       A modern, open source high performance RPC framework that can run in any environment
 License:       ASL 2.0
 URL:           https://www.grpc.io
 Source0:       https://github.com/grpc/grpc/archive/v%{version}/%{name}-%{version}.tar.gz
 Source1:       abseil-20200225.tar.gz 
-Source2:       benchmark-v1.5.1.tar.gz  
-Source4:       googletest-release-1.10.0.tar.gz
 
 Patch0000:     Copy-channel-args-hash-before-appending-ruby-user-ag.patch
 Patch0001:     Ran-generate_proto_ruby.sh-to-update-generated-files.patch
@@ -28,9 +26,7 @@ BuildRequires: pkgconfig(re2)
 Requires:      protobuf-compiler gflags 
 
 Provides:      %{name}-plugins = %{version}-%{release}
-Provides:      %{name}-cli = %{version}-%{release}
 Obsoletes:     %{name}-plugins < %{version}-%{release}
-Obsoletes:     %{name}-cli < %{version}-%{release}
 
 %description
 gRPC is a modern open source high performance RPC framework that can run in any environment.
@@ -60,8 +56,6 @@ sed -i 's:^prefix ?= .*:prefix ?= %{_prefix}:' Makefile
 sed -i 's:$(prefix)/lib:$(prefix)/%{_lib}:' Makefile
 sed -i 's:^GTEST_LIB =.*::' Makefile
 tar -zxf %{SOURCE1} --strip-components 1 -C %{_builddir}/%{name}-%{version}/third_party/abseil-cpp/
-tar -zxf %{SOURCE2} --strip-components 1 -C %{_builddir}/%{name}-%{version}/third_party/benchmark/
-tar -zxf %{SOURCE4} --strip-components 1 -C %{_builddir}/%{name}-%{version}/third_party/googletest/
 
 %build
 mkdir -p cmake/build
@@ -80,7 +74,6 @@ cmake ../../ -DgRPC_INSTALL=ON\
              -DgRPC_INSTALL_SHAREDIR=%{buildroot}%{_datadir}/%{name} \
              -DgRPC_INSTALL_PKGCONFIGDIR=%{buildroot}%{_libdir}/pkgconfig \
              -DCMAKE_INSTALL_PREFIX=%{_prefix} \
-             -DgRPC_BUILD_TESTS=ON \
              -DBUILD_SHARED_LIBS=ON
 make -j24 V=1
 
@@ -97,8 +90,6 @@ cd ../..
 %install
 cd cmake/build
 make install/local
-cp grpc_cli %{buildroot}%{_bindir}
-cp libgrpc++_test_config.so*  %{buildroot}%{_libdir}
 rm -rf %{buildroot}%{_prefix}/lib
 
 %delete_la_and_a
@@ -112,7 +103,6 @@ cd ../..
 %doc README.md
 %license LICENSE
 
-%{_bindir}/grpc_cli
 %{_bindir}/grpc_*_plugin
 
 %{_libdir}/*.so.1*
@@ -134,6 +124,12 @@ cd ../..
 %{python3_sitearch}/grpcio-%{version}-py?.?.egg-info
 
 %changelog
+* Wed Jun 23 2021 gaihuiying <gaihuiying1@huawei.com> - 1.31.0-4
+- Type:requirement
+- ID:NA
+- SUG:NA
+- DESC:delete benchmark and googletest sources in grpc and rebase to 1.31.0-4
+
 * Wed Dec 09 2020 gaihuiying <gaihuiying1@huawei.com> - 1.31.0-2
 - Type:requirement
 - ID:NA
