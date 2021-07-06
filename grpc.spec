@@ -1,11 +1,10 @@
 Name:          grpc
 Version:       1.31.0
-Release:       4
+Release:       5
 Summary:       A modern, open source high performance RPC framework that can run in any environment
 License:       ASL 2.0
 URL:           https://www.grpc.io
 Source0:       https://github.com/grpc/grpc/archive/v%{version}/%{name}-%{version}.tar.gz
-Source1:       abseil-20200225.tar.gz 
 
 Patch0000:     Copy-channel-args-hash-before-appending-ruby-user-ag.patch
 Patch0001:     Ran-generate_proto_ruby.sh-to-update-generated-files.patch
@@ -17,12 +16,14 @@ Patch0006:     repair-pkgconfig-path.patch
 Patch0007:     add-secure-compile-option-in-Makefile.patch
 Patch0008:     fix-re2-build-error.patch
 Patch0009:     allow-grpcio-to-be-build-against-system-re2.patch
+Patch0010:     grpc-1.31.0-python-grpcio-use-system-abseil.patch
 
 BuildRequires: gcc-c++ pkgconfig protobuf-devel protobuf-compiler gdb
 BuildRequires: openssl-devel c-ares-devel gflags-devel gtest-devel zlib-devel gperftools-devel
 BuildRequires: python3-devel python3-setuptools python3-Cython
 BuildRequires: cmake >= 3.13.0
 BuildRequires: pkgconfig(re2)
+BuildRequires: abseil-cpp-devel
 Requires:      protobuf-compiler gflags 
 
 Provides:      %{name}-plugins = %{version}-%{release}
@@ -38,6 +39,7 @@ mile of distributed computing to connect devices, mobile applications and browse
 Summary:       gRPC library development files
 Requires:      %{name} = %{version}-%{release}
 Requires:      pkgconfig(re2)
+Requires:      abseil-cpp-devel
 
 %description   devel
 Development headers and files for gRPC libraries.
@@ -55,7 +57,6 @@ Python3 bindings for gRPC.
 sed -i 's:^prefix ?= .*:prefix ?= %{_prefix}:' Makefile
 sed -i 's:$(prefix)/lib:$(prefix)/%{_lib}:' Makefile
 sed -i 's:^GTEST_LIB =.*::' Makefile
-tar -zxf %{SOURCE1} --strip-components 1 -C %{_builddir}/%{name}-%{version}/third_party/abseil-cpp/
 
 %build
 mkdir -p cmake/build
@@ -66,6 +67,7 @@ cmake ../../ -DgRPC_INSTALL=ON\
              -DgRPC_SSL_PROVIDER=package      \
              -DgRPC_ZLIB_PROVIDER=package     \
              -DgRPC_RE2_PROVIDER=package      \
+             -DgRPC_ABSL_PROVIDER=package     \
              -DgRPC_GFLAGS_PROVIDER=package   \
              -DgRPC_INSTALL_LIBDIR=%{buildroot}%{_libdir} \
              -DgRPC_INSTALL_BINDIR=%{buildroot}%{_bindir} \
@@ -83,6 +85,7 @@ export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=True
 export GRPC_PYTHON_BUILD_SYSTEM_ZLIB=True
 export GRPC_PYTHON_BUILD_SYSTEM_CARES=True
 export GRPC_PYTHON_BUILD_SYSTEM_RE2=True
+export GRPC_PYTHON_BUILD_SYSTEM_ABSL=True
 export CFLAGS="%optflags"
 cd ../..
 %py3_build
@@ -106,13 +109,11 @@ cd ../..
 %{_bindir}/grpc_*_plugin
 
 %{_libdir}/*.so.1*
-%{_libdir}/*absl*
 %{_datadir}/%{name}
 
 %files devel
 %defattr(-,root,root)
 %{_libdir}/*.so
-%exclude %{_libdir}/*absl*
 %{_libdir}/pkgconfig/*
 %{_includedir}/grpc
 %{_includedir}/grpc++
@@ -124,6 +125,12 @@ cd ../..
 %{python3_sitearch}/grpcio-%{version}-py?.?.egg-info
 
 %changelog
+* Tue Jul 06 2021 gaihuiying <gaihuiying1@huawei.com> - 1.31.0-5
+- Type:requirement
+- ID:NA
+- SUG:NA
+- DESC:separate abseil-cpp from grpc source
+
 * Wed Jun 23 2021 gaihuiying <gaihuiying1@huawei.com> - 1.31.0-4
 - Type:requirement
 - ID:NA
