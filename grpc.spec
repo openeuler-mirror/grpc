@@ -1,6 +1,6 @@
 Name:          grpc
 Version:       1.31.0
-Release:       5
+Release:       6
 Summary:       A modern, open source high performance RPC framework that can run in any environment
 License:       ASL 2.0
 URL:           https://www.grpc.io
@@ -18,7 +18,7 @@ Patch0008:     fix-re2-build-error.patch
 Patch0009:     allow-grpcio-to-be-build-against-system-re2.patch
 Patch0010:     grpc-1.31.0-python-grpcio-use-system-abseil.patch
 
-BuildRequires: gcc-c++ pkgconfig protobuf-devel protobuf-compiler gdb
+BuildRequires: gcc-c++ pkgconfig protobuf-devel protobuf-compiler
 BuildRequires: openssl-devel c-ares-devel gflags-devel gtest-devel zlib-devel gperftools-devel
 BuildRequires: python3-devel python3-setuptools python3-Cython
 BuildRequires: cmake >= 3.13.0
@@ -125,6 +125,12 @@ cd ../..
 %{python3_sitearch}/grpcio-%{version}-py?.?.egg-info
 
 %changelog
+* Mon Jul 19 2021 lijingyuan <lijingyuan3@huawei.com> - 1.31.0-6
+- Type:requirement
+- ID:NA
+- SUG:NA
+- DESC:cancel gdb in buildrequires
+
 * Tue Jul 06 2021 gaihuiying <gaihuiying1@huawei.com> - 1.31.0-5
 - Type:requirement
 - ID:NA
