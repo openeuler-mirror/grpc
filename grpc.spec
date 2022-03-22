@@ -3,7 +3,7 @@
 
 Name:          grpc
 Version:       1.41.1
-Release:       1
+Release:       2
 Summary:       A modern, open source high performance RPC framework that can run in any environment
 License:       ASL 2.0
 URL:           https://www.grpc.io
@@ -19,7 +19,6 @@ BuildRequires: python3-devel python3-setuptools python3-Cython
 BuildRequires: cmake >= 3.13.0
 BuildRequires: pkgconfig(re2)
 BuildRequires: abseil-cpp-devel
-BuildRequires: grpc
 Requires:      protobuf-compiler gflags
 
 %description
@@ -97,13 +96,6 @@ cd cmake/build
 make install/local
 rm -rf %{buildroot}%{_prefix}/lib
 
-cp %{_libdir}/libgpr.so* %{buildroot}%{_libdir}/
-cp %{_libdir}/libgrpc++.so* %{buildroot}%{_libdir}/
-cp %{_libdir}/libgrpc++_reflection.so* %{buildroot}%{_libdir}/
-cp %{_libdir}/libgrpc.so* %{buildroot}%{_libdir}/
-cp %{_libdir}/libaddress_sorting.so* %{buildroot}%{_libdir}/
-cp %{_libdir}/libupb.so* %{buildroot}%{_libdir}/
-
 %delete_la_and_a
 cd ../..
 %py3_install
@@ -129,13 +121,6 @@ cd ../..
 %{_libdir}/libgrpc_plugin_support.so.%{cpp_so_version}*
 %{_libdir}/libgrpcpp_channelz.so.%{cpp_so_version}*
 
-%{_libdir}/libgpr.so*
-%{_libdir}/libgrpc++.so*
-%{_libdir}/libgrpc++_reflection.so*
-%{_libdir}/libgrpc.so*
-%{_libdir}/libaddress_sorting.so*
-%{_libdir}/libupb.so*
-
 %files plugins
 %{_bindir}/grpc_*_plugin
 
@@ -153,6 +138,12 @@ cd ../..
 %{python3_sitearch}/grpcio-%{version}-py?.?.egg-info
 
 %changelog
+* Tue Mar 22 2022 gaihuiying <eaglegai@163.com> - 1.41.1-2
+- Type:bugfix
+- ID:NA
+- SUG:NA
+- DESC:delete useless so files
+
 * Mon Dec 27 2021 gaihuiying <gaihuiying1@huawei.com> - 1.41.1-1
 - Type:requirement
 - ID:NA
