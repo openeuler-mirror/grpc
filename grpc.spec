@@ -1,22 +1,17 @@
+%global c_so_version 19
+%global cpp_so_version 1.41
+
 Name:          grpc
-Version:       1.31.0
-Release:       6
+Version:       1.41.1
+Release:       1
 Summary:       A modern, open source high performance RPC framework that can run in any environment
 License:       ASL 2.0
 URL:           https://www.grpc.io
 Source0:       https://github.com/grpc/grpc/archive/v%{version}/%{name}-%{version}.tar.gz
 
-Patch0000:     Copy-channel-args-hash-before-appending-ruby-user-ag.patch
-Patch0001:     Ran-generate_proto_ruby.sh-to-update-generated-files.patch
-Patch0002:     Add-ABSL_RANDOM_HWAES_FLAGS.patch
-Patch0003:     Fix-destruction-race-between-subchannel-and-client_c.patch
-Patch0004:     Fix-use-after-free-by-removing-stream-from-transport.patch
-Patch0005:     repair-gflags-compile-error-with-cmake.patch 
 Patch0006:     repair-pkgconfig-path.patch
 Patch0007:     add-secure-compile-option-in-Makefile.patch
-Patch0008:     fix-re2-build-error.patch
-Patch0009:     allow-grpcio-to-be-build-against-system-re2.patch
-Patch0010:     grpc-1.31.0-python-grpcio-use-system-abseil.patch
+Patch0010:     backport-grpc-1.41.1-python-grpcio-use-system-abseil.patch
 
 BuildRequires: gcc-c++ pkgconfig protobuf-devel protobuf-compiler
 BuildRequires: openssl-devel c-ares-devel gflags-devel gtest-devel zlib-devel gperftools-devel
@@ -24,10 +19,8 @@ BuildRequires: python3-devel python3-setuptools python3-Cython
 BuildRequires: cmake >= 3.13.0
 BuildRequires: pkgconfig(re2)
 BuildRequires: abseil-cpp-devel
-Requires:      protobuf-compiler gflags 
-
-Provides:      %{name}-plugins = %{version}-%{release}
-Obsoletes:     %{name}-plugins < %{version}-%{release}
+BuildRequires: grpc
+Requires:      protobuf-compiler gflags
 
 %description
 gRPC is a modern open source high performance RPC framework that can run in any environment.
@@ -43,6 +36,15 @@ Requires:      abseil-cpp-devel
 
 %description   devel
 Development headers and files for gRPC libraries.
+
+%package plugins
+Summary:        Protocol buffers compiler plugins for gRPC
+# License:        same as base package
+Requires:       grpc = %{version}-%{release}
+Requires:       protobuf-compiler
+ 
+%description plugins
+Plugins to the protocol buffers compiler to generate gRPC sources.
 
 %package -n python3-grpcio
 Summary:       Python3 language bindings for gRPC
@@ -95,6 +97,13 @@ cd cmake/build
 make install/local
 rm -rf %{buildroot}%{_prefix}/lib
 
+cp %{_libdir}/libgpr.so* %{buildroot}%{_libdir}/
+cp %{_libdir}/libgrpc++.so* %{buildroot}%{_libdir}/
+cp %{_libdir}/libgrpc++_reflection.so* %{buildroot}%{_libdir}/
+cp %{_libdir}/libgrpc.so* %{buildroot}%{_libdir}/
+cp %{_libdir}/libaddress_sorting.so* %{buildroot}%{_libdir}/
+cp %{_libdir}/libupb.so* %{buildroot}%{_libdir}/
+
 %delete_la_and_a
 cd ../..
 %py3_install
@@ -106,10 +115,29 @@ cd ../..
 %doc README.md
 %license LICENSE
 
-%{_bindir}/grpc_*_plugin
-
-%{_libdir}/*.so.1*
 %{_datadir}/%{name}
+%{_libdir}/libaddress_sorting.so.%{c_so_version}*
+%{_libdir}/libgpr.so.%{c_so_version}*
+%{_libdir}/libgrpc.so.%{c_so_version}*
+%{_libdir}/libgrpc_unsecure.so.%{c_so_version}*
+%{_libdir}/libupb.so.%{c_so_version}*
+%{_libdir}/libgrpc++.so.%{cpp_so_version}*
+%{_libdir}/libgrpc++_alts.so.%{cpp_so_version}*
+%{_libdir}/libgrpc++_error_details.so.%{cpp_so_version}*
+%{_libdir}/libgrpc++_reflection.so.%{cpp_so_version}*
+%{_libdir}/libgrpc++_unsecure.so.%{cpp_so_version}*
+%{_libdir}/libgrpc_plugin_support.so.%{cpp_so_version}*
+%{_libdir}/libgrpcpp_channelz.so.%{cpp_so_version}*
+
+%{_libdir}/libgpr.so*
+%{_libdir}/libgrpc++.so*
+%{_libdir}/libgrpc++_reflection.so*
+%{_libdir}/libgrpc.so*
+%{_libdir}/libaddress_sorting.so*
+%{_libdir}/libupb.so*
+
+%files plugins
+%{_bindir}/grpc_*_plugin
 
 %files devel
 %defattr(-,root,root)
@@ -122,9 +150,15 @@ cd ../..
 %files -n python3-grpcio
 %defattr(-,root,root)
 %{python3_sitearch}/grpc
-%{python3_sitearch}/grpcio-%{version}-py?.?.egg-info
+%{python3_sitearch}/grpcio-%{version}-py*
 
 %changelog
+* Tue Mar 29 2022 xihaochen <xihaochen@h-partners.com> - 1.41.1-1
+- Type:requirement
+- ID:NA
+- SUG:NA
+- DESC:update grpc to 1.41.1
+
 * Mon Jul 19 2021 lijingyuan <lijingyuan3@huawei.com> - 1.31.0-6
 - Type:requirement
 - ID:NA
