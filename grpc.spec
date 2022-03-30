@@ -3,7 +3,7 @@
 
 Name:          grpc
 Version:       1.41.1
-Release:       1
+Release:       2
 Summary:       A modern, open source high performance RPC framework that can run in any environment
 License:       ASL 2.0
 URL:           https://www.grpc.io
@@ -14,13 +14,13 @@ Patch0007:     add-secure-compile-option-in-Makefile.patch
 Patch0010:     backport-grpc-1.41.1-python-grpcio-use-system-abseil.patch
 
 BuildRequires: gcc-c++ pkgconfig protobuf-devel protobuf-compiler
-BuildRequires: openssl-devel c-ares-devel gflags-devel gtest-devel zlib-devel gperftools-devel
+BuildRequires: openssl-devel c-ares-devel gtest-devel zlib-devel gperftools-devel
 BuildRequires: python3-devel python3-setuptools python3-Cython
 BuildRequires: cmake >= 3.13.0
 BuildRequires: pkgconfig(re2)
 BuildRequires: abseil-cpp-devel
 BuildRequires: grpc
-Requires:      protobuf-compiler gflags
+Requires:      protobuf-compiler
 
 %description
 gRPC is a modern open source high performance RPC framework that can run in any environment.
@@ -70,7 +70,6 @@ cmake ../../ -DgRPC_INSTALL=ON\
              -DgRPC_ZLIB_PROVIDER=package     \
              -DgRPC_RE2_PROVIDER=package      \
              -DgRPC_ABSL_PROVIDER=package     \
-             -DgRPC_GFLAGS_PROVIDER=package   \
              -DgRPC_INSTALL_LIBDIR=%{buildroot}%{_libdir} \
              -DgRPC_INSTALL_BINDIR=%{buildroot}%{_bindir} \
              -DgRPC_INSTALL_INCLUDEDIR=%{buildroot}%{_includedir} \
@@ -153,6 +152,12 @@ cd ../..
 %{python3_sitearch}/grpcio-%{version}-py*
 
 %changelog
+* Wed Mar 30 2022 xihaochen <xihaochen@h-partners.com> - 1.41.1-2
+- Type:requirement
+- ID:NA
+- SUG:NA
+- DESC:remove gflags
+
 * Tue Mar 29 2022 xihaochen <xihaochen@h-partners.com> - 1.41.1-1
 - Type:requirement
 - ID:NA
