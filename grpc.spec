@@ -179,7 +179,7 @@ cd ../..
 - SUG:NA
 - DESC:separate re2 from grpc source
 
-* Mon Aug 28 2020 liuxin <liuxin264@huawei.com> - 1.31.0-1
+* Fri Aug 28 2020 liuxin <liuxin264@huawei.com> - 1.31.0-1
 - Type:requirement
 - ID:NA
 - SUG:NA
