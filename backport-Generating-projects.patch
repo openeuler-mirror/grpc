@@ -1,0 +1,149 @@
+From 4efde0b477834d51ecf559779bde850e01984c5b Mon Sep 17 00:00:00 2001
+From: Esun Kim <veblush@google.com>
+Date: Tue, 29 Sep 2020 14:32:42 -0700
+Subject: [PATCH] Generating projects
+
+---
+ CMakeLists.txt                              | 10 +++++-----
+ Makefile                                    |  1 -
+ config.m4                                   |  1 -
+ config.w32                                  |  1 -
+ grpc.gemspec                                |  4 +++-
+ package.xml                                 |  4 +++-
+ src/python/grpcio/grpc_core_dependencies.py |  1 -
+ 7 files changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 7e36f024d7b5..a117b94125b1 100644
+--- a/Makefile
++++ b/Makefile
+@@ -4274,7 +4274,6 @@ endif
+ 
+ 
+ LIBGRPC_ABSEIL_SRC = \
+-    third_party/abseil-cpp/absl/base/dynamic_annotations.cc \
+     third_party/abseil-cpp/absl/base/internal/cycleclock.cc \
+     third_party/abseil-cpp/absl/base/internal/raw_logging.cc \
+     third_party/abseil-cpp/absl/base/internal/spinlock.cc \
+diff --git a/config.m4 b/config.m4
+index b7e257e3ab69..26b7b31fd2d1 100644
+--- a/config.m4
++++ b/config.m4
+@@ -611,7 +611,6 @@ if test "$PHP_GRPC" != "no"; then
+     src/php/ext/grpc/server.c \
+     src/php/ext/grpc/server_credentials.c \
+     src/php/ext/grpc/timeval.c \
+-    third_party/abseil-cpp/absl/base/dynamic_annotations.cc \
+     third_party/abseil-cpp/absl/base/internal/cycleclock.cc \
+     third_party/abseil-cpp/absl/base/internal/raw_logging.cc \
+     third_party/abseil-cpp/absl/base/internal/spinlock.cc \
+diff --git a/config.w32 b/config.w32
+index 777e8cf8e9a7..a01156c0b454 100644
+--- a/config.w32
++++ b/config.w32
+@@ -578,7 +578,6 @@ if (PHP_GRPC != "no") {
+     "src\\php\\ext\\grpc\\server.c " +
+     "src\\php\\ext\\grpc\\server_credentials.c " +
+     "src\\php\\ext\\grpc\\timeval.c " +
+-    "third_party\\abseil-cpp\\absl\\base\\dynamic_annotations.cc " +
+     "third_party\\abseil-cpp\\absl\\base\\internal\\cycleclock.cc " +
+     "third_party\\abseil-cpp\\absl\\base\\internal\\raw_logging.cc " +
+     "third_party\\abseil-cpp\\absl\\base\\internal\\spinlock.cc " +
+diff --git a/grpc.gemspec b/grpc.gemspec
+index 6ae02b8bc90e..34e0d2269570 100644
+--- a/grpc.gemspec
++++ b/grpc.gemspec
+@@ -1174,12 +1174,12 @@ Gem::Specification.new do |s|
+   s.files += %w( third_party/abseil-cpp/absl/base/casts.h )
+   s.files += %w( third_party/abseil-cpp/absl/base/config.h )
+   s.files += %w( third_party/abseil-cpp/absl/base/const_init.h )
+-  s.files += %w( third_party/abseil-cpp/absl/base/dynamic_annotations.cc )
+   s.files += %w( third_party/abseil-cpp/absl/base/dynamic_annotations.h )
+   s.files += %w( third_party/abseil-cpp/absl/base/internal/atomic_hook.h )
+   s.files += %w( third_party/abseil-cpp/absl/base/internal/bits.h )
+   s.files += %w( third_party/abseil-cpp/absl/base/internal/cycleclock.cc )
+   s.files += %w( third_party/abseil-cpp/absl/base/internal/cycleclock.h )
++  s.files += %w( third_party/abseil-cpp/absl/base/internal/dynamic_annotations.h )
+   s.files += %w( third_party/abseil-cpp/absl/base/internal/endian.h )
+   s.files += %w( third_party/abseil-cpp/absl/base/internal/errno_saver.h )
+   s.files += %w( third_party/abseil-cpp/absl/base/internal/hide_ptr.h )
+diff --git a/package.xml b/package.xml
+index 36c87bb94b1b..8e6199006fbc 100644
+--- a/package.xml
++++ b/package.xml
+@@ -1176,12 +1176,12 @@
+     <file baseinstalldir="/" name="third_party/abseil-cpp/absl/base/casts.h" role="src" />
+     <file baseinstalldir="/" name="third_party/abseil-cpp/absl/base/config.h" role="src" />
+     <file baseinstalldir="/" name="third_party/abseil-cpp/absl/base/const_init.h" role="src" />
+-    <file baseinstalldir="/" name="third_party/abseil-cpp/absl/base/dynamic_annotations.cc" role="src" />
+     <file baseinstalldir="/" name="third_party/abseil-cpp/absl/base/dynamic_annotations.h" role="src" />
+     <file baseinstalldir="/" name="third_party/abseil-cpp/absl/base/internal/atomic_hook.h" role="src" />
+     <file baseinstalldir="/" name="third_party/abseil-cpp/absl/base/internal/bits.h" role="src" />
+     <file baseinstalldir="/" name="third_party/abseil-cpp/absl/base/internal/cycleclock.cc" role="src" />
+     <file baseinstalldir="/" name="third_party/abseil-cpp/absl/base/internal/cycleclock.h" role="src" />
++    <file baseinstalldir="/" name="third_party/abseil-cpp/absl/base/internal/dynamic_annotations.h" role="src" />
+     <file baseinstalldir="/" name="third_party/abseil-cpp/absl/base/internal/endian.h" role="src" />
+     <file baseinstalldir="/" name="third_party/abseil-cpp/absl/base/internal/errno_saver.h" role="src" />
+     <file baseinstalldir="/" name="third_party/abseil-cpp/absl/base/internal/hide_ptr.h" role="src" />
+diff --git a/src/python/grpcio/grpc_core_dependencies.py b/src/python/grpcio/grpc_core_dependencies.py
+index 3373671efd88..3d20756ad550 100644
+--- a/src/python/grpcio/grpc_core_dependencies.py
++++ b/src/python/grpcio/grpc_core_dependencies.py
+@@ -577,7 +577,6 @@
+     'src/core/tsi/ssl_transport_security.cc',
+     'src/core/tsi/transport_security.cc',
+     'src/core/tsi/transport_security_grpc.cc',
+-    'third_party/abseil-cpp/absl/base/dynamic_annotations.cc',
+     'third_party/abseil-cpp/absl/base/internal/cycleclock.cc',
+     'third_party/abseil-cpp/absl/base/internal/raw_logging.cc',
+     'third_party/abseil-cpp/absl/base/internal/spinlock.cc',
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 0b224ac..8a74c52 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -15541,7 +15541,7 @@ generate_pkgconfig(
+   "gRPC platform support library"
+   "${gRPC_CORE_VERSION}"
+   ""
+-  "-lgpr -labsl_str_format_internal -labsl_time -labsl_time_zone -labsl_civil_time -labsl_strings -labsl_strings_internal -labsl_throw_delegate -labsl_int128 -labsl_base -labsl_spinlock_wait -labsl_raw_logging_internal -labsl_log_severity -labsl_dynamic_annotations"
++  "-lgpr -labsl_str_format_internal -labsl_time -labsl_time_zone -labsl_civil_time -labsl_strings -labsl_strings_internal -labsl_throw_delegate -labsl_int128 -labsl_base -labsl_spinlock_wait -labsl_raw_logging_internal -labsl_log_severity"
+   ""
+   "gpr.pc")
+ 
+@@ -15551,7 +15551,7 @@ generate_pkgconfig(
+   "high performance general RPC framework"
+   "${gRPC_CORE_VERSION}"
+   "gpr openssl"
+-  "-lgrpc -laddress_sorting -lre2 -lupb -lcares -lz -labsl_bad_optional_access -labsl_str_format_internal -labsl_time -labsl_time_zone -labsl_civil_time -labsl_strings -labsl_strings_internal -labsl_throw_delegate -labsl_int128 -labsl_base -labsl_spinlock_wait -labsl_raw_logging_internal -labsl_log_severity -labsl_dynamic_annotations"
++  "-lgrpc -laddress_sorting -lre2 -lupb -lcares -lz -labsl_bad_optional_access -labsl_str_format_internal -labsl_time -labsl_time_zone -labsl_civil_time -labsl_strings -labsl_strings_internal -labsl_throw_delegate -labsl_int128 -labsl_base -labsl_spinlock_wait -labsl_raw_logging_internal -labsl_log_severity"
+   ""
+   "grpc.pc")
+ 
+@@ -15561,7 +15561,7 @@ generate_pkgconfig(
+   "high performance general RPC framework without SSL"
+   "${gRPC_CORE_VERSION}"
+   "gpr"
+-  "-lgrpc_unsecure -labsl_bad_optional_access -labsl_str_format_internal -labsl_time -labsl_time_zone -labsl_civil_time -labsl_strings -labsl_strings_internal -labsl_throw_delegate -labsl_int128 -labsl_base -labsl_spinlock_wait -labsl_raw_logging_internal -labsl_log_severity -labsl_dynamic_annotations"
++  "-lgrpc_unsecure -labsl_bad_optional_access -labsl_str_format_internal -labsl_time -labsl_time_zone -labsl_civil_time -labsl_strings -labsl_strings_internal -labsl_throw_delegate -labsl_int128 -labsl_base -labsl_spinlock_wait -labsl_raw_logging_internal -labsl_log_severity"
+   ""
+   "grpc_unsecure.pc")
+ 
+@@ -15571,7 +15571,7 @@ generate_pkgconfig(
+   "C++ wrapper for gRPC"
+   "${gRPC_CPP_VERSION}"
+   "grpc"
+-  "-lgrpc++ -labsl_bad_optional_access -labsl_str_format_internal -labsl_time -labsl_time_zone -labsl_civil_time -labsl_strings -labsl_strings_internal -labsl_throw_delegate -labsl_int128 -labsl_base -labsl_spinlock_wait -labsl_raw_logging_internal -labsl_log_severity -labsl_dynamic_annotations"
++  "-lgrpc++ -labsl_bad_optional_access -labsl_str_format_internal -labsl_time -labsl_time_zone -labsl_civil_time -labsl_strings -labsl_strings_internal -labsl_throw_delegate -labsl_int128 -labsl_base -labsl_spinlock_wait -labsl_raw_logging_internal -labsl_log_severity"
+   ""
+   "grpc++.pc")
+ 
+@@ -15581,6 +15581,6 @@ generate_pkgconfig(
+   "C++ wrapper for gRPC without SSL"
+   "${gRPC_CPP_VERSION}"
+   "grpc_unsecure"
+-  "-lgrpc++_unsecure -labsl_bad_optional_access -labsl_str_format_internal -labsl_time -labsl_time_zone -labsl_civil_time -labsl_strings -labsl_strings_internal -labsl_throw_delegate -labsl_int128 -labsl_base -labsl_spinlock_wait -labsl_raw_logging_internal -labsl_log_severity -labsl_dynamic_annotations"
++  "-lgrpc++_unsecure -labsl_bad_optional_access -labsl_str_format_internal -labsl_time -labsl_time_zone -labsl_civil_time -labsl_strings -labsl_strings_internal -labsl_throw_delegate -labsl_int128 -labsl_base -labsl_spinlock_wait -labsl_raw_logging_internal -labsl_log_severity"
+   ""
+   "grpc++_unsecure.pc")
+-- 
+2.27.0
