@@ -1,6 +1,6 @@
 Name:          grpc
 Version:       1.31.0
-Release:       5
+Release:       6
 Summary:       A modern, open source high performance RPC framework that can run in any environment
 License:       ASL 2.0
 URL:           https://www.grpc.io
@@ -17,6 +17,8 @@ Patch0007:     add-secure-compile-option-in-Makefile.patch
 Patch0008:     fix-re2-build-error.patch
 Patch0009:     allow-grpcio-to-be-build-against-system-re2.patch
 Patch0010:     grpc-1.31.0-python-grpcio-use-system-abseil.patch
+Patch0011:     backport-Upgrade-Abseil-to-LTS-2020923.patch
+Patch0012:     backport-Generating-projects.patch
 
 BuildRequires: gcc-c++ pkgconfig protobuf-devel protobuf-compiler gdb
 BuildRequires: openssl-devel c-ares-devel gflags-devel gtest-devel zlib-devel gperftools-devel
@@ -124,6 +126,12 @@ cd ../..
 %{python3_sitearch}/grpcio-%{version}-py?.?.egg-info
 
 %changelog
+* Tue Oct 11 2022 gaihuiying <eaglegai@163.com> - 1.31.0-6
+- Type:bugfix
+- ID:NA
+- SUG:NA
+- DESC:fix adjust to abseil-cpp 20210324,since it dont provides absl_dynamic_annotations library anymore
+
 * Tue Oct 19 2021 gaihuiying <gaihuiying1@huawei.com> - 1.31.0-5
 - Type:requirement
 - ID:NA
