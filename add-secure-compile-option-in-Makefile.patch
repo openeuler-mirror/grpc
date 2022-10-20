@@ -8,9 +8,9 @@ diff -urN grpc/CMakeLists.txt grpc_new/CMakeLists.txt
  endif()
  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${_gRPC_C_CXX_FLAGS}")
  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${_gRPC_C_CXX_FLAGS}")
-+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wl,-z,now -fPIE -fPIC")
-+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,-z,now -fstack-protector-strong")
-+set(_gRPC_ALLTARGETS_LIBRARYIES "${_gRPC_ALLTARGETS_LIBRARYIES} -Wl,-z,now -pie") 
++set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wl,-z,relro -Wl,-z,now -fPIE -fPIC -fstack-protector-strong -Wp,-D_FORTIFY_SOURCE=2 -O2")
++set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,-z,relro -Wl,-z,now -fPIE -fPIC -fstack-protector-strong -Wp,-D_FORTIFY_SOURCE=2 -O2")
++set(_gRPC_ALLTARGETS_LIBRARYIES "${_gRPC_ALLTARGETS_LIBRARYIES} -Wl,-z,relro -Wl,-z,now -pie") 
  
  if(gRPC_USE_PROTO_LITE)
    set(_gRPC_PROTOBUF_LIBRARY_NAME "libprotobuf-lite")
@@ -23,9 +23,9 @@ index 6ede6e34d2..d6190ecde4 100644
  DEFINES += $(EXTRA_DEFINES)
  LDLIBS += $(EXTRA_LDLIBS)
 
-+CFLAGS += -Wl,-z,now -fPIE -fPIC
-+CPPFLAGS += -Wl,-z,now -fstack-protector-strong
-+LDFLAGS += -Wl,-z,now -pie
++CFLAGS += -Wl,-z,relro -Wl,-z,now -fPIE -fPIC -fstack-protector-strong -Wp,-D_FORTIFY_SOURCE=2 -O2
++CPPFLAGS += -Wl,-z,relro -Wl,-z,now -fPIE -fPIC -fstack-protector-strong -Wp,-D_FORTIFY_SOURCE=2 -O2
++LDFLAGS += -Wl,-z,relro -Wl,-z,now -pie
 +
  HOST_CPPFLAGS += $(CPPFLAGS)
  HOST_CFLAGS += $(CFLAGS)
