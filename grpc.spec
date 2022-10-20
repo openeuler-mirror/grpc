@@ -1,6 +1,6 @@
 Name:          grpc
 Version:       1.31.0
-Release:       3
+Release:       4
 Summary:       A modern, open source high performance RPC framework that can run in any environment
 License:       ASL 2.0
 URL:           https://www.grpc.io
@@ -81,7 +81,8 @@ cmake ../../ -DgRPC_INSTALL=ON\
              -DgRPC_INSTALL_PKGCONFIGDIR=%{buildroot}%{_libdir}/pkgconfig \
              -DCMAKE_INSTALL_PREFIX=%{_prefix} \
              -DgRPC_BUILD_TESTS=ON \
-             -DBUILD_SHARED_LIBS=ON
+             -DBUILD_SHARED_LIBS=ON \
+             -DCMAKE_VERBOSE_MAKEFILE=ON
 make -j24 V=1
 
 # build python module
@@ -134,6 +135,12 @@ cd ../..
 %{python3_sitearch}/grpcio-%{version}-py?.?.egg-info
 
 %changelog
+* Thu Oct 20 2022 zhouyihang <zhouyihang3@h-partners.com> - 1.31.0-4
+- Type:bugfix
+- ID:NA
+- SUG:NA
+- DESC:add some secure compilation options
+
 * Fri Mar 26 2021 liulong <liulong20@huawei.com> - 1.31.0-3
 - Type:requirement
 - ID:NA
