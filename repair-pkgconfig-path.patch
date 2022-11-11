@@ -16,9 +16,9 @@ diff -urN grpc/CMakeLists.txt grpc_new/CMakeLists.txt
 --- grpc/CMakeLists.txt	2020-08-24 09:14:14.361862041 +0800
 +++ grpc_new/CMakeLists.txt	2020-08-27 14:50:00.371507303 +0800
 @@ -42,6 +42,7 @@
- set(gRPC_INSTALL_INCLUDEDIR "include" CACHE STRING "Installation directory for headers")
  set(gRPC_INSTALL_CMAKEDIR "lib/cmake/${PACKAGE_NAME}" CACHE STRING "Installation directory for cmake config files")
  set(gRPC_INSTALL_SHAREDIR "share/grpc" CACHE STRING "Installation directory for root certificates")
+ set(gRPC_BUILD_MSVC_MP_COUNT 0 CACHE STRING "The maximum number of processes for MSVC /MP option")
 +set(gRPC_INSTALL_PKGCONFIGDIR "lib/pkgconfig" CACHE STRING "Installation directory for pkgconfig")
  
  # Options
@@ -27,7 +27,7 @@ diff -urN grpc/CMakeLists.txt grpc_new/CMakeLists.txt
      "${output_filepath}"
      @ONLY)
    install(FILES "${output_filepath}"
--    DESTINATION "lib/pkgconfig/")
+-    DESTINATION "${gRPC_INSTALL_LIBDIR}/pkgconfig")
 +    DESTINATION ${gRPC_INSTALL_PKGCONFIGDIR})
  endfunction()
  
