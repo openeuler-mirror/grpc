@@ -1,9 +1,9 @@
-%global c_so_version 19
-%global cpp_so_version 1.41
+%global c_so_version 28
+%global cpp_so_version 1.50
 
 Name:          grpc
-Version:       1.41.1
-Release:       4
+Version:       1.50.1
+Release:       1
 Summary:       A modern, open source high performance RPC framework that can run in any environment
 License:       ASL 2.0
 URL:           https://www.grpc.io
@@ -11,7 +11,6 @@ Source0:       https://github.com/grpc/grpc/archive/v%{version}/%{name}-%{versio
 
 Patch0006:     repair-pkgconfig-path.patch
 Patch0007:     add-secure-compile-option-in-Makefile.patch
-Patch0010:     backport-grpc-1.41.1-python-grpcio-use-system-abseil.patch
 
 BuildRequires: gcc-c++ pkgconfig protobuf-devel protobuf-compiler
 BuildRequires: openssl-devel c-ares-devel gtest-devel zlib-devel gperftools-devel
@@ -58,6 +57,8 @@ Python3 bindings for gRPC.
 sed -i 's:^prefix ?= .*:prefix ?= %{_prefix}:' Makefile
 sed -i 's:$(prefix)/lib:$(prefix)/%{_lib}:' Makefile
 sed -i 's:^GTEST_LIB =.*::' Makefile
+#avoid downloading
+mkdir  %{_builddir}/%{name}-%{version}/third_party/opencensus-proto/src
 
 %build
 mkdir -p cmake/build
@@ -138,6 +139,12 @@ cd ../..
 %{python3_sitearch}/grpcio-%{version}-py*
 
 %changelog
+* Fri Nov 11 2022 zhouyihang <zhouyihang3@h-partners.com> - 1.50.1-1
+- Type:requirement
+- ID:NA
+- SUG:NA
+- DESC:upgrade grpc to 1.50.1
+
 * Thu Oct 20 2022 zhouyihang <zhouyihang3@h-partners.com> - 1.41.1-4
 - Type:bugfix
 - ID:NA
