@@ -1,0 +1,347 @@
+diff -uNr a/Makefile b/Makefile
+--- a/Makefile	2022-10-21 15:11:23.000000000 +0800
++++ b/Makefile	2023-05-19 14:24:12.145553400 +0800
+@@ -274,7 +274,7 @@
+ TMPOUT = `mktemp /tmp/test-out-XXXXXX`
+ endif
+
+-CHECK_NO_CXX14_COMPAT_WORKS_CMD = $(CC) -std=c++14 -Werror -Wno-c++14-compat -o $(TMPOUT) -c test/build/no-c++14-compat.cc
++CHECK_NO_CXX14_COMPAT_WORKS_CMD = $(CC) -Werror -Wno-c++14-compat -o $(TMPOUT) -c test/build/no-c++14-compat.cc
+ HAS_WORKING_NO_CXX14_COMPAT = $(shell $(CHECK_NO_CXX14_COMPAT_WORKS_CMD) 2> /dev/null && echo true || echo false)
+ ifeq ($(HAS_WORKING_NO_CXX14_COMPAT),true)
+ W_NO_CXX14_COMPAT=-Wno-c++14-compat
+@@ -322,7 +322,6 @@
+ HOST_LDXX ?= $(LDXX)
+
+ CFLAGS += -std=c11 $(W_EXTRA_SEMI)
+-CXXFLAGS += -std=c++14
+ ifeq ($(SYSTEM),Darwin)
+ CXXFLAGS += -stdlib=libc++
+ LDFLAGS += -framework CoreFoundation
+diff -uNr a/Rakefile b/Rakefile
+--- a/Rakefile	2022-10-21 15:11:23.000000000 +0800
++++ b/Rakefile	2023-05-19 14:24:18.900340600 +0800
+@@ -104,7 +104,7 @@
+
+   env = 'CPPFLAGS="-D_WIN32_WINNT=0x600 -DNTDDI_VERSION=0x06000000 -DUNICODE -D_UNICODE -Wno-unused-variable -Wno-unused-result -DCARES_STATICLIB -Wno-error=conversion -Wno-sign-compare -Wno-parentheses -Wno-format -DWIN32_LEAN_AND_MEAN" '
+   env += 'CFLAGS="-Wno-incompatible-pointer-types" '
+-  env += 'CXXFLAGS="-std=c++14 -fno-exceptions" '
++  env += 'CXXFLAGS="-fno-exceptions" '
+   env += 'LDFLAGS=-static '
+   env += 'SYSTEM=MINGW32 '
+   env += 'EMBED_ZLIB=true '
+diff -uNr a/config.m4 b/config.m4
+--- a/config.m4	2022-10-21 15:11:23.000000000 +0800
++++ b/config.m4	2023-05-19 14:23:46.161038600 +0800
+@@ -19,7 +19,7 @@
+   LIBS="-lpthread $LIBS"
+
+   CFLAGS="-std=c11 -g -O2"
+-  CXXFLAGS="-std=c++14 -fno-exceptions -fno-rtti -g -O2"
++  CXXFLAGS="-fno-exceptions -fno-rtti -g -O2"
+   GRPC_SHARED_LIBADD="-lpthread $GRPC_SHARED_LIBADD"
+   PHP_REQUIRE_CXX()
+   PHP_ADD_LIBRARY(pthread)
+diff -uNr a/examples/android/helloworld/app/CMakeLists.txt b/examples/android/helloworld/app/CMakeLists.txt
+--- a/examples/android/helloworld/app/CMakeLists.txt	2022-10-21 15:11:23.000000000 +0800
++++ b/examples/android/helloworld/app/CMakeLists.txt	2023-05-19 14:25:04.203799900 +0800
+@@ -1,6 +1,6 @@
+ cmake_minimum_required(VERSION 3.4.1)
+
+-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
++set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+
+ # https://github.com/abseil/abseil-cpp/issues/626
+ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DABSL_NO_XRAY_ATTRIBUTES=1")
+diff -uNr a/examples/android/helloworld/app/build.gradle b/examples/android/helloworld/app/build.gradle
+--- a/examples/android/helloworld/app/build.gradle	2022-10-21 15:11:23.000000000 +0800
++++ b/examples/android/helloworld/app/build.gradle	2023-05-19 14:24:56.058405000 +0800
+@@ -18,7 +18,7 @@
+                 def grpc_cpp_plugin = project.hasProperty('grpc_cpp_plugin') ?
+                         project.property('grpc_cpp_plugin') : '/usr/local/bin/grpc_cpp_plugin'
+
+-                cppFlags "-std=c++14 -frtti -fexceptions"
++                cppFlags "-frtti -fexceptions"
+                 arguments '-DANDROID_STL=c++_static'
+                 arguments '-DRUN_HAVE_POSIX_REGEX=0'
+                 arguments '-DRUN_HAVE_STD_REGEX=0'
+diff -uNr a/examples/cpp/compression/Makefile b/examples/cpp/compression/Makefile
+--- a/examples/cpp/compression/Makefile	2022-10-21 15:11:23.000000000 +0800
++++ b/examples/cpp/compression/Makefile	2023-05-19 14:25:11.572104800 +0800
+@@ -18,7 +18,6 @@
+ SYSTEM ?= $(HOST_SYSTEM)
+ CXX = g++
+ CPPFLAGS += `pkg-config --cflags protobuf grpc`
+-CXXFLAGS += -std=c++14
+ ifeq ($(SYSTEM),Darwin)
+ LDFLAGS += -L/usr/local/lib `pkg-config --libs protobuf grpc++ grpc`\
+            -lgrpc++_reflection\
+diff -uNr a/examples/cpp/helloworld/Makefile b/examples/cpp/helloworld/Makefile
+--- a/examples/cpp/helloworld/Makefile	2022-10-21 15:11:23.000000000 +0800
++++ b/examples/cpp/helloworld/Makefile	2023-05-19 14:25:16.399285700 +0800
+@@ -18,7 +18,6 @@
+ SYSTEM ?= $(HOST_SYSTEM)
+ CXX = g++
+ CPPFLAGS += `pkg-config --cflags protobuf grpc`
+-CXXFLAGS += -std=c++14
+ ifeq ($(SYSTEM),Darwin)
+ LDFLAGS += -L/usr/local/lib `pkg-config --libs protobuf grpc++`\
+            -pthread\
+diff -uNr a/examples/cpp/load_balancing/Makefile b/examples/cpp/load_balancing/Makefile
+--- a/examples/cpp/load_balancing/Makefile	2022-10-21 15:11:23.000000000 +0800
++++ b/examples/cpp/load_balancing/Makefile	2023-05-19 14:25:20.869102800 +0800
+@@ -18,7 +18,6 @@
+ SYSTEM ?= $(HOST_SYSTEM)
+ CXX = g++
+ CPPFLAGS += `pkg-config --cflags protobuf grpc`
+-CXXFLAGS += -std=c++14
+ ifeq ($(SYSTEM),Darwin)
+ LDFLAGS += -L/usr/local/lib `pkg-config --libs protobuf grpc++ grpc`\
+            -lgrpc++_reflection\
+diff -uNr a/examples/cpp/metadata/Makefile b/examples/cpp/metadata/Makefile
+--- a/examples/cpp/metadata/Makefile	2022-10-21 15:11:23.000000000 +0800
++++ b/examples/cpp/metadata/Makefile	2023-05-19 14:23:23.399994200 +0800
+@@ -17,7 +17,6 @@
+ SYSTEM ?= $(HOST_SYSTEM)
+ CXX = g++
+ CPPFLAGS += `pkg-config --cflags protobuf grpc`
+-CXXFLAGS += -std=c++14
+ ifeq ($(SYSTEM),Darwin)
+ LDFLAGS += -L/usr/local/lib `pkg-config --libs protobuf grpc++ grpc`\
+            -lgrpc++_reflection\
+diff -uNr a/examples/cpp/route_guide/Makefile b/examples/cpp/route_guide/Makefile
+--- a/examples/cpp/route_guide/Makefile	2022-10-21 15:11:23.000000000 +0800
++++ b/examples/cpp/route_guide/Makefile	2023-05-19 14:25:26.820863600 +0800
+@@ -18,7 +18,6 @@
+ SYSTEM ?= $(HOST_SYSTEM)
+ CXX = g++
+ CPPFLAGS += `pkg-config --cflags protobuf grpc`
+-CXXFLAGS += -std=c++14
+ ifeq ($(SYSTEM),Darwin)
+ LDFLAGS += -L/usr/local/lib `pkg-config --libs protobuf grpc++`\
+ 					 -pthread\
+diff -uNr a/grpc.gyp b/grpc.gyp
+--- a/grpc.gyp	2022-10-21 15:11:23.000000000 +0800
++++ b/grpc.gyp	2023-05-19 14:23:57.135339200 +0800
+@@ -71,7 +71,6 @@
+     ],
+     'cflags_cc': [
+       '-Werror',
+-      '-std=c++14',
+     ],
+     'include_dirs': [
+       '.',
+@@ -154,7 +153,6 @@
+             '-Isrc/core/ext/upbdefs-generated',
+             '-Ithird_party/xxhash',
+             '-stdlib=libc++',
+-            '-std=c++14',
+             '-Wno-error=deprecated-declarations',
+           ],
+         },
+diff -uNr a/setup.py b/setup.py
+--- a/setup.py	2022-10-21 15:11:23.000000000 +0800
++++ b/setup.py	2023-05-19 14:24:46.850802700 +0800
+@@ -206,7 +206,7 @@
+     code_test = (b'#include <atomic>\n' +
+                  b'int main() { return std::atomic<int64_t>{}; }')
+     cxx = shlex.split(os.environ.get('CXX', 'c++'))
+-    cpp_test = subprocess.Popen(cxx + ['-x', 'c++', '-std=c++14', '-'],
++    cpp_test = subprocess.Popen(cxx + ['-x', 'c++', '-'],
+                                 stdin=PIPE,
+                                 stdout=PIPE,
+                                 stderr=PIPE)
+@@ -216,7 +216,7 @@
+     # Double-check to see if -latomic actually can solve the problem.
+     # https://github.com/grpc/grpc/issues/22491
+     cpp_test = subprocess.Popen(cxx +
+-                                ['-x', 'c++', '-std=c++14', '-', '-latomic'],
++                                ['-x', 'c++', '-', '-latomic'],
+                                 stdin=PIPE,
+                                 stdout=PIPE,
+                                 stderr=PIPE)
+@@ -234,7 +234,7 @@
+ EXTRA_ENV_COMPILE_ARGS = os.environ.get('GRPC_PYTHON_CFLAGS', None)
+ EXTRA_ENV_LINK_ARGS = os.environ.get('GRPC_PYTHON_LDFLAGS', None)
+ if EXTRA_ENV_COMPILE_ARGS is None:
+-    EXTRA_ENV_COMPILE_ARGS = ' -std=c++14'
++    EXTRA_ENV_COMPILE_ARGS = ''
+     if 'win32' in sys.platform:
+         if sys.version_info < (3, 5):
+             EXTRA_ENV_COMPILE_ARGS += ' -D_hypot=hypot'
+diff -uNr a/src/android/test/interop/app/CMakeLists.txt b/src/android/test/interop/app/CMakeLists.txt
+--- a/src/android/test/interop/app/CMakeLists.txt	2022-10-21 15:11:23.000000000 +0800
++++ b/src/android/test/interop/app/CMakeLists.txt	2023-05-19 14:25:42.606652300 +0800
+@@ -1,6 +1,6 @@
+ cmake_minimum_required(VERSION 3.4.1)
+
+-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
++set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+
+ # https://github.com/abseil/abseil-cpp/issues/626
+ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DABSL_NO_XRAY_ATTRIBUTES=1")
+diff -uNr a/src/android/test/interop/app/build.gradle b/src/android/test/interop/app/build.gradle
+--- a/src/android/test/interop/app/build.gradle	2022-10-21 15:11:23.000000000 +0800
++++ b/src/android/test/interop/app/build.gradle	2023-05-19 14:25:35.542115600 +0800
+@@ -18,7 +18,7 @@
+                 def grpc_cpp_plugin = project.hasProperty('grpc_cpp_plugin') ?
+                         project.property('grpc_cpp_plugin') : '/usr/local/bin/grpc_cpp_plugin'
+
+-                cppFlags "-std=c++14 -frtti -fexceptions"
++                cppFlags "-frtti -fexceptions"
+                 arguments '-DANDROID_STL=c++_shared'
+                 arguments '-DRUN_HAVE_POSIX_REGEX=0'
+                 arguments '-DRUN_HAVE_STD_REGEX=0'
+diff -uNr a/src/python/grpcio/commands.py b/src/python/grpcio/commands.py
+--- a/src/python/grpcio/commands.py	2022-10-21 15:11:23.000000000 +0800
++++ b/src/python/grpcio/commands.py	2023-05-19 14:25:48.260141500 +0800
+@@ -228,7 +228,7 @@
+             """
+             try:
+                 # TODO(lidiz) Remove the generated a.out for success tests.
+-                cc_test = subprocess.Popen(['cc', '-x', 'c', '-std=c++14', '-'],
++                cc_test = subprocess.Popen(['cc', '-x', 'c', '-'],
+                                            stdin=subprocess.PIPE,
+                                            stdout=subprocess.PIPE,
+                                            stderr=subprocess.PIPE)
+diff -uNr a/templates/Makefile.template b/templates/Makefile.template
+--- a/templates/Makefile.template	2022-10-21 15:11:23.000000000 +0800
++++ b/templates/Makefile.template	2023-05-19 14:26:15.041458000 +0800
+@@ -203,7 +203,7 @@
+   TMPOUT = `mktemp /tmp/test-out-XXXXXX`
+   endif
+
+-  CHECK_NO_CXX14_COMPAT_WORKS_CMD = $(CC) -std=c++14 -Werror -Wno-c++14-compat -o $(TMPOUT) -c test/build/no-c++14-compat.cc
++  CHECK_NO_CXX14_COMPAT_WORKS_CMD = $(CC) -Werror -Wno-c++14-compat -o $(TMPOUT) -c test/build/no-c++14-compat.cc
+   HAS_WORKING_NO_CXX14_COMPAT = $(shell $(CHECK_NO_CXX14_COMPAT_WORKS_CMD) 2> /dev/null && echo true || echo false)
+   ifeq ($(HAS_WORKING_NO_CXX14_COMPAT),true)
+   W_NO_CXX14_COMPAT=-Wno-c++14-compat
+@@ -229,7 +229,6 @@
+   HOST_LDXX ?= $(LDXX)
+
+   CFLAGS += -std=c11 ${' '.join(warning_var('$(W_%s)', warning) for warning in PREFERRED_WARNINGS)}
+-  CXXFLAGS += -std=c++14
+   ifeq ($(SYSTEM),Darwin)
+   CXXFLAGS += -stdlib=libc++
+   LDFLAGS += -framework CoreFoundation
+diff -uNr a/templates/config.m4.template b/templates/config.m4.template
+--- a/templates/config.m4.template	2022-10-21 15:11:23.000000000 +0800
++++ b/templates/config.m4.template	2023-05-19 14:25:55.853523400 +0800
+@@ -21,7 +21,7 @@
+     LIBS="-lpthread $LIBS"
+
+     CFLAGS="-std=c11 -g -O2"
+-    CXXFLAGS="-std=c++14 -fno-exceptions -fno-rtti -g -O2"
++    CXXFLAGS="-fno-exceptions -fno-rtti -g -O2"
+     GRPC_SHARED_LIBADD="-lpthread $GRPC_SHARED_LIBADD"
+     PHP_REQUIRE_CXX()
+     PHP_ADD_LIBRARY(pthread)
+diff -uNr a/templates/grpc.gyp.template b/templates/grpc.gyp.template
+--- a/templates/grpc.gyp.template	2022-10-21 15:11:23.000000000 +0800
++++ b/templates/grpc.gyp.template	2023-05-19 14:26:03.538051100 +0800
+@@ -67,7 +67,6 @@
+       ],
+       'cflags_cc': [
+         '-Werror',
+-        '-std=c++14',
+       ],
+       'include_dirs': [
+         '.',
+@@ -129,7 +128,6 @@
+               '${item}',
+               % endfor
+               '-stdlib=libc++',
+-              '-std=c++14',
+               '-Wno-error=deprecated-declarations',
+             ],
+             % endif
+diff -uNr a/test/distrib/bazel/cpp/.bazelrc b/test/distrib/bazel/cpp/.bazelrc
+--- a/test/distrib/bazel/cpp/.bazelrc	2022-10-21 15:11:23.000000000 +0800
++++ b/test/distrib/bazel/cpp/.bazelrc	2023-05-19 14:26:23.051787500 +0800
+@@ -1,3 +1,3 @@
+ # bazelrc file
+
+-build --cxxopt='-std=c++14'
++build --cxxopt=''
+diff -uNr a/test/distrib/bazel/python/.bazelrc b/test/distrib/bazel/python/.bazelrc
+--- a/test/distrib/bazel/python/.bazelrc	2022-10-21 15:11:23.000000000 +0800
++++ b/test/distrib/bazel/python/.bazelrc	2023-05-19 14:26:32.226636900 +0800
+@@ -1,3 +1,3 @@
+ # bazelrc file
+
+-build --cxxopt='-std=c++14'
++build --cxxopt=''
+diff -uNr a/test/distrib/bazel/python_second_test_repo/.bazelrc b/test/distrib/bazel/python_second_test_repo/.bazelrc
+--- a/test/distrib/bazel/python_second_test_repo/.bazelrc	2022-10-21 15:11:23.000000000 +0800
++++ b/test/distrib/bazel/python_second_test_repo/.bazelrc	2023-05-19 14:26:39.589950300 +0800
+@@ -1,3 +1,3 @@
+ # bazelrc file
+
+-build --cxxopt='-std=c++14'
++build --cxxopt=''
+diff -uNr a/tools/bazel.rc b/tools/bazel.rc
+--- a/tools/bazel.rc	2022-10-21 15:11:23.000000000 +0800
++++ b/tools/bazel.rc	2023-05-19 14:26:44.737879800 +0800
+@@ -2,7 +2,7 @@
+
+ build --client_env=CC=clang
+ build --copt=-DGRPC_BAZEL_BUILD
+-build --cxxopt='-std=c++14'
++build --cxxopt=''
+ build --action_env=GRPC_BAZEL_RUNTIME=1
+ build --define=use_fast_cpp_protos=true
+
+diff -uNr a/tools/distrib/gen_compilation_database.py b/tools/distrib/gen_compilation_database.py
+--- a/tools/distrib/gen_compilation_database.py	2022-10-21 15:11:23.000000000 +0800
++++ b/tools/distrib/gen_compilation_database.py	2023-05-19 14:27:06.086262000 +0800
+@@ -107,7 +107,7 @@
+         options += " -Wno-unused-function"
+         if not target["file"].startswith("external/"):
+             # *.h file is treated as C header by default while our headers files are all C++14.
+-            options = "-x c++ -std=c++14 -fexceptions " + options
++            options = "-x c++ -fexceptions " + options
+
+     target["command"] = " ".join([cc, options])
+     return target
+diff -uNr a/tools/distrib/python/grpcio_tools/setup.py b/tools/distrib/python/grpcio_tools/setup.py
+--- a/tools/distrib/python/grpcio_tools/setup.py	2022-10-21 15:11:23.000000000 +0800
++++ b/tools/distrib/python/grpcio_tools/setup.py	2023-05-19 14:27:31.394151800 +0800
+@@ -88,7 +88,7 @@
+     code_test = (b'#include <atomic>\n' +
+                  b'int main() { return std::atomic<int64_t>{}; }')
+     cxx = os.environ.get('CXX', 'c++')
+-    cpp_test = subprocess.Popen([cxx, '-x', 'c++', '-std=c++14', '-'],
++    cpp_test = subprocess.Popen([cxx, '-x', 'c++', '-'],
+                                 stdin=PIPE,
+                                 stdout=PIPE,
+                                 stderr=PIPE)
+@@ -98,7 +98,7 @@
+     # Double-check to see if -latomic actually can solve the problem.
+     # https://github.com/grpc/grpc/issues/22491
+     cpp_test = subprocess.Popen(
+-        [cxx, '-x', 'c++', '-std=c++14', '-', '-latomic'],
++        [cxx, '-x', 'c++', '-', '-latomic'],
+         stdin=PIPE,
+         stdout=PIPE,
+         stderr=PIPE)
+@@ -134,7 +134,7 @@
+ EXTRA_ENV_COMPILE_ARGS = os.environ.get('GRPC_PYTHON_CFLAGS', None)
+ EXTRA_ENV_LINK_ARGS = os.environ.get('GRPC_PYTHON_LDFLAGS', None)
+ if EXTRA_ENV_COMPILE_ARGS is None:
+-    EXTRA_ENV_COMPILE_ARGS = '-std=c++14'
++    EXTRA_ENV_COMPILE_ARGS = ''
+     if 'win32' in sys.platform:
+         if sys.version_info < (3, 5):
+             # We use define flags here and don't directly add to DEFINE_MACROS below to
+diff -uNr a/tools/run_tests/artifacts/artifact_targets.py b/tools/run_tests/artifacts/artifact_targets.py
+--- a/tools/run_tests/artifacts/artifact_targets.py	2022-10-21 15:11:23.000000000 +0800
++++ b/tools/run_tests/artifacts/artifact_targets.py	2023-05-19 14:27:37.922913700 +0800
+@@ -384,7 +384,7 @@
+                     environ=environ)
+             else:
+                 environ[
+-                    'CXXFLAGS'] += ' -std=c++14 -stdlib=libc++ %s' % _MACOS_COMPAT_FLAG
++                    'CXXFLAGS'] += ' -stdlib=libc++ %s' % _MACOS_COMPAT_FLAG
+                 return create_jobspec(
+                     self.name,
+                     ['tools/run_tests/artifacts/build_artifact_protoc.sh'],
