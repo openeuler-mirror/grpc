@@ -3,7 +3,7 @@
 
 Name:          grpc
 Version:       1.50.1
-Release:       1
+Release:       2
 Summary:       A modern, open source high performance RPC framework that can run in any environment
 License:       ASL 2.0
 URL:           https://www.grpc.io
@@ -11,6 +11,7 @@ Source0:       https://github.com/grpc/grpc/archive/v%{version}/%{name}-%{versio
 
 Patch0006:     repair-pkgconfig-path.patch
 Patch0007:     add-secure-compile-option-in-Makefile.patch
+Patch0008:     grpc-remove-invalid-CCFLAGS.patch
 
 BuildRequires: gcc-c++ pkgconfig protobuf-devel protobuf-compiler
 BuildRequires: openssl-devel c-ares-devel gtest-devel zlib-devel gperftools-devel
@@ -139,6 +140,12 @@ cd ../..
 %{python3_sitearch}/grpcio-%{version}-py*
 
 %changelog
+* Fri May 19 2023 Xiaoya Huang <huangxiaoya@iscas.ac.cn> - 1.50.1-2
+- Type:bugfix
+- ID:NA
+- SUG:NA
+- DESC:Remove invalid CCFLAGS '-std=c++14' not allowed with C
+
 * Fri Nov 11 2022 zhouyihang <zhouyihang3@h-partners.com> - 1.50.1-1
 - Type:requirement
 - ID:NA
